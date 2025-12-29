@@ -6,7 +6,7 @@ services:
       FRONTEND_URL: "*"
       BACKEND_URL: "*"
       DYNAMO_ENDPOINT: http://dynamodb-local:8000
-    image: backend-flask
+    build: ./backend-flask
     ports:
       - "4567:4567"
     volumes:
@@ -17,7 +17,7 @@ services:
   frontend-react-js:
     environment:
       REACT_APP_BACKEND_URL: "*"
-    image: frontend-react-js
+    build: ./frontend-react-js
     ports:
       - "3000:3000"
     volumes:
