@@ -6,6 +6,10 @@ services:
       FRONTEND_URL: "*"
       BACKEND_URL: "*"
       DYNAMO_ENDPOINT: http://dynamodb-local:8000
+      OTEL_SERVICE_NAME: backend-flask
+      OTEL_EXPORTER_OTLP_ENDPOINT: "https://api.honeycomb.io"
+      OTEL_EXPORTER_OTLP_HEADERS: "x-honeycomb-team=${HONEYCOMB_API_KEY}"
+      
     build: ./backend-flask
     ports:
       - "4567:4567"
