@@ -29,58 +29,58 @@ services:
     networks:
       - internal-network
 
-  db:
-    image: postgres:13-alpine
-    restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-    ports:
-      - "5432:5432"
-    volumes:
-      - db:/var/lib/postgresql/data
-    networks:
-      - internal-network
+  # db:
+  #   image: postgres:13-alpine
+  #   restart: always
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=password
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - db:/var/lib/postgresql/data
+  #   networks:
+  #     - internal-network
 
-  dynamodb-local:
-    # Needed to avoid permission issues with local volume
-    user: root
-    image: amazon/dynamodb-local:latest
-    container_name: dynamodb-local
-    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data"
-    ports:
-      - "8000:8000"
-    volumes:
-      - "./docker/dynamodb:/home/dynamodblocal/data"
-    working_dir: /home/dynamodblocal
-    networks:
-      - internal-network
+  # dynamodb-local:
+  #   # Needed to avoid permission issues with local volume
+  #   user: root
+  #   image: amazon/dynamodb-local:latest
+  #   container_name: dynamodb-local
+  #   command: "-jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data"
+  #   ports:
+  #     - "8000:8000"
+  #   volumes:
+  #     - "./docker/dynamodb:/home/dynamodblocal/data"
+  #   working_dir: /home/dynamodblocal
+  #   networks:
+  #     - internal-network
 
-  dynamodb-admin:
-    image: aaronshaf/dynamodb-admin
-    container_name: dynamodb-admin
-    ports:
-      - "8001:8001"
-    environment:
-      DYNAMO_ENDPOINT: http://dynamodb-local:8000
-    depends_on:
-      - dynamodb-local
-    networks:
-      - internal-network
+  # dynamodb-admin:
+  #   image: aaronshaf/dynamodb-admin
+  #   container_name: dynamodb-admin
+  #   ports:
+  #     - "8001:8001"
+  #   environment:
+  #     DYNAMO_ENDPOINT: http://dynamodb-local:8000
+  #   depends_on:
+  #     - dynamodb-local
+  #   networks:
+  #     - internal-network
 
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin
-    restart: always
-    ports:
-      - "5050:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-    depends_on:
-      - db
-    networks:
-      - internal-network
+  # pgadmin:
+  #   image: dpage/pgadmin4
+  #   container_name: pgadmin
+  #   restart: always
+  #   ports:
+  #     - "5050:80"
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: admin@example.com
+  #     PGADMIN_DEFAULT_PASSWORD: admin
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - internal-network
 
 
 # the name flag is a hack to change the default prepend folder
