@@ -6,7 +6,12 @@ tracer = trace.get_tracer("HomeActivities")
 class HomeActivities:
   def run():
     with tracer.start_as_current_span("HomeActivities-mock-data"):
+      #Adding Manual Attribute1 to our Manual Span
+      span = trace.get_current_span()
       now = datetime.now(timezone.utc).astimezone()
+      span.set_attribute("app.now", now.isoformat())
+
+      
       results = [{
         'uuid': '68f126b0-1ceb-4a33-88be-d90fa7109eee',
         'handle':  'Andrew Brown',
@@ -46,4 +51,7 @@ class HomeActivities:
         'replies': []
       }
       ]
+      #Adding Manual Attribute2  and Attribute3 to our Manual Span
+      span.set_attribute("app.results ", len(results))
+      span.set_attribute("app.results[0].handle", results[0]['handle'])
     return results
