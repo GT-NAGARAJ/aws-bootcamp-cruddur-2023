@@ -1,15 +1,15 @@
 from datetime import datetime, timedelta, timezone
-from opentelemetry import trace
+# from opentelemetry import trace
 
-tracer = trace.get_tracer("HomeActivities")
+# tracer = trace.get_tracer("HomeActivities")
 
 class HomeActivities:
   def run():
-    with tracer.start_as_current_span("HomeActivities-mock-data"):
+    # with tracer.start_as_current_span("HomeActivities-mock-data"):
       #Adding Manual Attribute1 to our Manual Span
-      span = trace.get_current_span()
+      # span = trace.get_current_span()
       now = datetime.now(timezone.utc).astimezone()
-      span.set_attribute("app.now", now.isoformat())
+      # span.set_attribute("app.now", now.isoformat())
 
       
       results = [{
@@ -52,6 +52,6 @@ class HomeActivities:
       }
       ]
       #Adding Manual Attribute2  and Attribute3 to our Manual Span
-      span.set_attribute("app.results ", len(results))
-      span.set_attribute("app.results[0].handle", results[0]['handle'])
-    return results
+      # span.set_attribute("app.results", len(results)),
+      # span.set_attribute("app.results[0].handle", results[0]['handle'])
+      return results
