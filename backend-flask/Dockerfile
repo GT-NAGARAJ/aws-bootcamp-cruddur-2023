@@ -7,6 +7,9 @@ RUN pip3 install -r requirements.txt
 
 COPY . .
 
+ENV AWS_XRAY_CONTEXT_MISSING=LOG_ERROR
+ENV AWS_XRAY_TRACING_NAME=flask-backend
+ENV AWS_XRAY_DAEMON_ADDRESS=xray-daemon:2000
 ENV FLASK_ENV=development
 
 EXPOSE ${PORT}

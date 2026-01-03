@@ -38,7 +38,25 @@ from services.show_activity import *
 # simple_processor = SimpleSpanProcessor(ConsoleSpanExporter())
 # provider.add_span_processor(simple_processor)
 
+
+
+
+# Xray Instrumentation
+# app.py
+from aws_xray_sdk.core import xray_recorder, patch_all
+from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
+
+xray_recorder.configure(
+    service="flask-backend",
+    context_missing="LOG_ERROR"
+)
+
+patch_all()
+
 app = Flask(__name__)
+
+XRayMiddleware(app, xray_recorder)
+
 
 # OpenTelemetry Configuration
 # FlaskInstrumentor().instrument_app(app)
