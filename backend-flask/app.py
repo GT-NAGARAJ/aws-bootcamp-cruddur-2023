@@ -43,19 +43,19 @@ from services.show_activity import *
 
 # Xray Instrumentation
 # app.py
-from aws_xray_sdk.core import xray_recorder, patch_all
-from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
+# from aws_xray_sdk.core import xray_recorder, patch_all
+# from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
 
-xray_recorder.configure(
-    service="flask-backend",
-    context_missing="LOG_ERROR"
-)
+# xray_recorder.configure(
+#     service="flask-backend",
+#     context_missing="LOG_ERROR"
+# )
 
-patch_all()
+# patch_all()
 
 app = Flask(__name__)
 
-XRayMiddleware(app, xray_recorder)
+# XRayMiddleware(app, xray_recorder)
 
 
 # OpenTelemetry Configuration

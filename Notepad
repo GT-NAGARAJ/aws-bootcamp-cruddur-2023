@@ -1,0 +1,7 @@
+aws xray create-group \
+   --group-name "Cruddur" \
+   --filter-expression "service(\"backend-flask\")"
+
+   aws xray create-group \
+   --group-name "Cruddur" \
+   --filter-expression "service(\"backend-flask\") {fault OR error}"
