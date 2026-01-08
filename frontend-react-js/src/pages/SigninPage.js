@@ -3,7 +3,7 @@ import React from "react";
 import {ReactComponent as Logo} from '../components/svg/logo.svg';
 import { Link } from "react-router-dom";
 
-import { Auth } from 'aws-amplify';
+import { signIn } from '@aws-amplify/auth';
 
 
 
@@ -18,14 +18,12 @@ export default function SigninPage() {
   setErrors('')
   event.preventDefault();
   try {
-    Auth.signIn(email, password)
-      .then(user => {
-        localStorage.setItem("access_token", user.signInUserSession.accessToken.jwtToken)
-        window.location.href = "/"
-      })
-      .catch(err => { console.log('Error!', err) });
+    const { isSignedIn, nextStep } = await signIn({ username: email, password });
+    if (isSignedIn) {
+      window.location.href = "/"
+    }
   } catch (error) {
-    if (error.code == 'UserNotConfirmedException') {
+    if (error.name === 'UserNotConfirmedException') {
       window.location.href = "/confirm"
     }
     setErrors(error.message)
