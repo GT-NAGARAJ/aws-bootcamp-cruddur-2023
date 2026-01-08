@@ -18,7 +18,7 @@ export default function SigninPage() {
   setErrors('')
   event.preventDefault();
   try {
-    const { isSignedIn, nextStep } = await signIn({ username: email, password });
+    const { isSignedIn } = await signIn({ username: email, password });
     if (isSignedIn) {
       window.location.href = "/"
     }
