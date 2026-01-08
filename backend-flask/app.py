@@ -15,7 +15,7 @@ from services.show_activity import *
 
 # Cloudwatch
 
-import watchtower
+#import watchtower
 import logging
 from time import strftime
 
