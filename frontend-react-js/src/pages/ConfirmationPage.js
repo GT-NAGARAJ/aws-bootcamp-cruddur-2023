@@ -3,8 +3,7 @@ import React from "react";
 import { useParams } from 'react-router-dom';
 import {ReactComponent as Logo} from '../components/svg/logo.svg';
 
-// [TODO] Authenication
-import Cookies from 'js-cookie'
+import { confirmSignUp, resendSignUpCode } from '@aws-amplify/auth';
 
 export default function ConfirmationPage() {
   const [email, setEmail] = React.useState('');
@@ -12,8 +11,9 @@ export default function ConfirmationPage() {
   const [errors, setErrors] = React.useState('');
   const [codeSent, setCodeSent] = React.useState(false);
 
-  const params = useParams();
+  const [cognitoErrors, setCognitoErrors] = React.useState('');
 
+  const params = useParams();
   const code_onchange = (event) => {
     setCode(event.target.value);
   }
@@ -21,31 +21,59 @@ export default function ConfirmationPage() {
     setEmail(event.target.value);
   }
 
+  // const resend_code = async (event) => {
+  //   console.log('resend_code')
+  //   // [TODO] Authenication
+  // }
+
   const resend_code = async (event) => {
-    console.log('resend_code')
-    // [TODO] Authenication
+  setCognitoErrors('')
+  try {
+    await resendSignUpCode({ username: email });
+    console.log('code resent successfully');
+    setCodeSent(true)
+  } catch (err) {
+    console.log(err)
+    if (err.message === 'Username cannot be empty'){
+      setCognitoErrors("You need to provide an email in order to send Resend Activiation Code")   
+    } else if (err.message === "Username/client id combination not found."){
+      setCognitoErrors("Email is invalid or cannot be found.")   
+    }
   }
+}
+
+  // const onsubmit = async (event) => {
+  //   event.preventDefault();
+  //   console.log('ConfirmationPage.onsubmit')
+  //   // [TODO] Authenication
+  //   if (Cookies.get('user.email') === undefined || Cookies.get('user.email') === '' || Cookies.get('user.email') === null){
+  //     setErrors("You need to provide an email in order to send Resend Activiation Code")   
+  //   } else {
+  //     if (Cookies.get('user.email') === email){
+  //       if (Cookies.get('user.confirmation_code') === code){
+  //         Cookies.set('user.logged_in',true)
+  //         window.location.href = "/"
+  //       } else {
+  //         setErrors("Code is not valid")
+  //       }
+  //     } else {
+  //       setErrors("Email is invalid or cannot be found.")   
+  //     }
+  //   }
+  //   return false
+  // }
 
   const onsubmit = async (event) => {
-    event.preventDefault();
-    console.log('ConfirmationPage.onsubmit')
-    // [TODO] Authenication
-    if (Cookies.get('user.email') === undefined || Cookies.get('user.email') === '' || Cookies.get('user.email') === null){
-      setErrors("You need to provide an email in order to send Resend Activiation Code")   
-    } else {
-      if (Cookies.get('user.email') === email){
-        if (Cookies.get('user.confirmation_code') === code){
-          Cookies.set('user.logged_in',true)
-          window.location.href = "/"
-        } else {
-          setErrors("Code is not valid")
-        }
-      } else {
-        setErrors("Email is invalid or cannot be found.")   
-      }
-    }
-    return false
+  event.preventDefault();
+  setErrors('')
+  try {
+    await confirmSignUp({ username: email, confirmationCode: code });
+    window.location.href = "/"
+  } catch (error) {
+    setErrors(error.message)
   }
+  return false
+}
 
   let el_errors;
   if (errors){
