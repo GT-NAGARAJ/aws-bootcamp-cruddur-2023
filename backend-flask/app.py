@@ -13,6 +13,12 @@ from services.messages import *
 from services.create_message import *
 from services.show_activity import *
 
+# Cloudwatch
+
+import watchtower
+import logging
+from time import strftime
+
 # OTEL Python SDK Imports
 # from opentelemetry import trace
 # from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
@@ -52,6 +58,15 @@ from services.show_activity import *
 # )
 
 # patch_all()
+
+# Configuring Logger to Use CloudWatch
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.DEBUG)
+console_handler = logging.StreamHandler()
+cw_handler = watchtower.CloudWatchLogHandler(log_group='cruddur')
+LOGGER.addHandler(console_handler)
+LOGGER.addHandler(cw_handler)
+LOGGER.info("Logs from the python flask backend")
 
 app = Flask(__name__)
 
